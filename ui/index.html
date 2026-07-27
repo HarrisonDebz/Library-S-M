@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Status — LSM</title>
+  <meta name="description" content="Real-time occupancy and facility updates for the main library. Check current capacity, today's hours, and predicted foot traffic." />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+
+  <!-- ═══ Navigation ═══════════════════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav__logo" aria-label="LSM Home">
+      <span class="nav__logo-mark">LSM</span>
+    </a>
+
+    <div class="nav__tabs" role="tablist">
+      <a href="index.html"   class="nav__tab nav__tab--active" id="nav-tab-status"  role="tab" aria-selected="true">Status</a>
+      <a href="scanner.html" class="nav__tab"                  id="nav-tab-scanner" role="tab" aria-selected="false">Scanner</a>
+      <a href="admin.html"   class="nav__tab"                  id="nav-tab-admin"   role="tab" aria-selected="false">Admin</a>
+    </div>
+
+    <div class="nav__actions">
+      <button class="nav__icon-btn" id="nav-btn-notifications" aria-label="Notifications" title="Notifications">
+        <!-- bell icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="nav__notif-dot" id="nav-notif-dot" aria-label="Unread notifications"></span>
+      </button>
+      <button class="nav__icon-btn" id="nav-btn-profile" aria-label="Profile" title="My account">
+        <!-- user icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ Page Content ═════════════════════════════════════════════════════ -->
+  <main class="page" id="main-content">
+
+    <!-- Page header -->
+    <header class="page__header">
+      <h1 class="page__title">Main Library Status</h1>
+      <p class="page__subtitle">Real-time occupancy and facility updates.</p>
+    </header>
+
+    <!-- Top grid: occupancy + sidebar -->
+    <div class="status-grid">
+
+      <!-- ── Current Occupancy ───────────────────────────────────────────── -->
+      <section class="status-grid__occupancy" aria-labelledby="occupancy-heading">
+        <div class="card occupancy-card">
+          <div class="occupancy-card__top">
+            <div class="occupancy-card__left">
+              <h2 class="card__title" id="occupancy-heading">Current Occupancy</h2>
+              <span class="badge badge--busy" id="occupancy-badge" role="status" aria-live="polite">BUSY</span>
+            </div>
+            <div class="occupancy-card__right">
+              <div class="occupancy-pct" id="occupancy-pct" aria-label="Occupancy percentage">78%</div>
+              <div class="occupancy-pct__label" id="occupancy-pct-label">Capacity Reached</div>
+            </div>
+          </div>
+
+          <!-- Diamond visual -->
+          <div class="occupancy-visual" aria-hidden="true">
+            <div class="diamond-wrap">
+              <div class="diamond-bg" id="diamond-bg"></div>
+              <div class="diamond-inner">
+                <!-- people icon -->
+                <svg class="diamond-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <div class="diamond-count" id="diamond-count">942 / 1200</div>
+                <div class="diamond-label">Students</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="occupancy-bar-wrap">
+            <div class="occupancy-bar-track" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="Occupancy level">
+              <div class="occupancy-bar-fill" id="occupancy-bar" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="occupancy-card__footer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Last updated: <span id="last-updated">Just now</span></span>
+            <span style="margin-left: auto;">
+              <span class="live-indicator">
+                <span class="live-indicator__dot"></span>
+                Live
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+      <aside class="status-grid__sidebar" aria-label="Notices and hours">
+
+        <!-- High Priority Notice -->
+        <section aria-labelledby="notice-heading">
+          <div class="card notice-card" id="notice-card">
+            <div class="notice-card__header">
+              <!-- megaphone icon -->
+              <svg class="notice-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 11l19-9-9 19-2-8-8-2z"/>
+              </svg>
+              <h2 class="notice-card__title" id="notice-heading">High Priority Notice</h2>
+            </div>
+            <p class="notice-card__body" id="notice-body">
+              The 3rd-floor silent study area is temporarily closed for maintenance until 2:00 PM. Please use the 4th-floor overflow spaces.
+            </p>
+            <button class="notice-card__btn" id="notice-btn" type="button">View Details</button>
+          </div>
+        </section>
+
+        <!-- Today's Hours -->
+        <section aria-labelledby="hours-heading">
+          <div class="card">
+            <div class="hours-card__header">
+              <!-- clock icon -->
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <h2 class="card__title" id="hours-heading">Today's Hours</h2>
+            </div>
+            <ul class="hours-list" id="hours-list" role="list" aria-label="Library hours today">
+              <!-- populated by JS -->
+            </ul>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+
+    <!-- ── Predicted Foot Traffic ──────────────────────────────────────────── -->
+    <section aria-labelledby="chart-heading">
+      <div class="card chart-card">
+        <div class="chart-card__header">
+          <h2 class="card__title" id="chart-heading">Predicted Foot Traffic</h2>
+          <div class="chart-toggle" role="group" aria-label="Select day">
+            <button class="chart-toggle__btn chart-toggle__btn--active" id="chart-btn-today"    type="button" aria-pressed="true">Today</button>
+            <button class="chart-toggle__btn"                           id="chart-btn-tomorrow" type="button" aria-pressed="false">Tomorrow</button>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="bar-chart__container" id="chart-container" role="img" aria-label="Bar chart showing predicted foot traffic throughout the day">
+          <!-- Y-axis labels -->
+          <div class="bar-chart__y-labels" id="chart-y-labels" aria-hidden="true">
+            <span class="bar-chart__y-label">100%</span>
+            <span class="bar-chart__y-label">50%</span>
+            <span class="bar-chart__y-label">0%</span>
+          </div>
+
+          <!-- Grid lines -->
+          <div class="bar-chart__grid" aria-hidden="true">
+            <div class="bar-chart__grid-line"></div>
+            <div class="bar-chart__grid-line"></div>
+            <div class="bar-chart__grid-line"></div>
+          </div>
+
+          <!-- Bars -->
+          <div class="bar-chart__bars" id="chart-bars" aria-hidden="true">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- X-axis labels -->
+        <div class="bar-chart__x-labels" id="chart-x-labels" aria-hidden="true">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="scripts/status.js"></script>
+</body>
+</html>
