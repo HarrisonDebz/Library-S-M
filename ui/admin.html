@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — LSM</title>
+  <title>Dashboard — LSM Admin</title>
   <meta name="description" content="LSM Admin Dashboard — real-time facility status, occupancy metrics, alerts, and system management." />
   <link rel="stylesheet" href="styles/admin.css" />
 </head>
@@ -26,7 +26,7 @@
 
       <div class="sidebar__nav-label">Main</div>
 
-      <a href="admin.html" class="sidebar__link sidebar__link--active" id="nav-dashboard" aria-current="page">
+      <a href="#" class="sidebar__link sidebar__link--active" id="nav-dashboard" data-section="dashboard" aria-current="page">
         <!-- grid icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -35,7 +35,7 @@
         Dashboard
       </a>
 
-      <a href="#visitors" class="sidebar__link" id="nav-visitors">
+      <a href="#" class="sidebar__link" id="nav-visitors" data-section="visitors">
         <!-- users icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -47,7 +47,7 @@
         <span class="sidebar__badge" id="nav-visitors-badge">3</span>
       </a>
 
-      <a href="#history" class="sidebar__link" id="nav-history">
+      <a href="#" class="sidebar__link" id="nav-history" data-section="history">
         <!-- clock icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/>
@@ -58,7 +58,7 @@
 
       <div class="sidebar__nav-label">Facility</div>
 
-      <a href="#spaces" class="sidebar__link" id="nav-spaces">
+      <a href="#" class="sidebar__link" id="nav-spaces" data-section="spaces">
         <!-- map-pin icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -67,7 +67,7 @@
         Spaces
       </a>
 
-      <a href="#settings" class="sidebar__link" id="nav-settings">
+      <a href="#" class="sidebar__link" id="nav-settings" data-section="settings">
         <!-- settings icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="3"/>
@@ -78,7 +78,7 @@
 
     </nav>
 
-    <!-- Footer: link back to public page -->
+    <!-- Footer -->
     <div class="sidebar__footer">
       <a href="index.html" class="sidebar__link" style="font-size:12.5px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -88,47 +88,82 @@
         </svg>
         Public Status
       </a>
+      <a href="#" class="sidebar__link sidebar__link--signout" id="btn-signout" style="font-size:12.5px; margin-top:4px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Sign Out
+      </a>
     </div>
   </aside>
 
   <!-- ═══ Main ═════════════════════════════════════════════════════════════ -->
   <div class="main" role="main">
 
-    <!-- Top bar -->
-    <div class="topbar">
+    <!-- Shared Top bar (title/subtitle/action updated by JS) -->
+    <div class="topbar" id="topbar">
       <div class="topbar__left">
-        <h1 class="topbar__title">Overview</h1>
-        <p class="topbar__subtitle">Real-time facility status and metrics.</p>
+        <h1 class="topbar__title" id="topbar-title">Overview</h1>
+        <p class="topbar__subtitle" id="topbar-subtitle">Real-time facility status and metrics.</p>
       </div>
-      <button class="topbar__btn" id="btn-generate-report" type="button" aria-label="Generate a facility report">
-        <!-- file-text icon -->
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-        Generate Report
-      </button>
+      <div class="topbar__actions" id="topbar-actions">
+        <!-- Dashboard action -->
+        <button class="topbar__btn" id="btn-generate-report" type="button" aria-label="Generate a facility report">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Generate Report
+        </button>
+        <!-- History actions (hidden by default) -->
+        <div id="history-topbar-actions" style="display:none; align-items:center; gap:10px;">
+          <div class="hist-filter-group" id="hist-period-group">
+            <button class="hist-period-btn hist-period-btn--active" data-period="7">Last 7 Days</button>
+            <button class="hist-period-btn" data-period="30">Last 30 Days</button>
+            <button class="hist-period-btn" data-period="90">Last 90 Days</button>
+          </div>
+          <button class="topbar__btn topbar__btn--outline" id="btn-export-csv" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export CSV
+          </button>
+        </div>
+        <!-- Settings actions (hidden by default) -->
+        <div id="settings-topbar-actions" style="display:none; align-items:center; gap:10px;">
+          <button class="topbar__btn topbar__btn--ghost" id="btn-settings-cancel" type="button">Cancel</button>
+          <button class="topbar__btn" id="btn-settings-save" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Save Changes
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
+    <!-- ══ Section: Dashboard ════════════════════════════════════════════ -->
+    <div class="content section" id="section-dashboard">
 
-      <!-- ── Stat Cards ──────────────────────────────────────────────────── -->
+      <!-- Stat Cards -->
       <div class="stats-row" role="list" aria-label="Key metrics">
 
-        <!-- Current Occupancy -->
         <div class="stat-card" role="listitem">
           <div class="stat-card__header">
             <span class="stat-card__label">Current Occupancy</span>
             <div class="stat-card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
             </div>
           </div>
@@ -143,17 +178,14 @@
           </div>
         </div>
 
-        <!-- Total Capacity -->
         <div class="stat-card" role="listitem">
           <div class="stat-card__header">
             <span class="stat-card__label">Total Capacity</span>
             <div class="stat-card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <line x1="3" y1="9" x2="21" y2="9"/>
-                <line x1="3" y1="15" x2="21" y2="15"/>
-                <line x1="9" y1="9" x2="9" y2="21"/>
-                <line x1="15" y1="9" x2="15" y2="21"/>
+                <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+                <line x1="9" y1="9" x2="9" y2="21"/><line x1="15" y1="9" x2="15" y2="21"/>
               </svg>
             </div>
           </div>
@@ -164,14 +196,12 @@
           </div>
         </div>
 
-        <!-- Avg Visit Duration -->
         <div class="stat-card" role="listitem">
           <div class="stat-card__header">
             <span class="stat-card__label">Avg Visit Duration</span>
             <div class="stat-card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
               </svg>
             </div>
           </div>
@@ -179,15 +209,12 @@
           <div class="stat-card__sub stat-card__sub--neutral" id="stat-avg-sub">Steady average</div>
         </div>
 
-        <!-- Peak Hour -->
         <div class="stat-card" role="listitem">
           <div class="stat-card__header">
             <span class="stat-card__label">Peak Hour</span>
             <div class="stat-card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="18" y1="20" x2="18" y2="10"/>
-                <line x1="12" y1="20" x2="12" y2="4"/>
-                <line x1="6" y1="20" x2="6" y2="14"/>
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
               </svg>
             </div>
           </div>
@@ -197,10 +224,7 @@
 
       </div><!-- /stats-row -->
 
-      <!-- ── Middle: Chart + Alerts ──────────────────────────────────────── -->
       <div class="middle-row">
-
-        <!-- Occupancy Trends Chart -->
         <section class="card" aria-labelledby="trends-heading">
           <div class="card__header">
             <div>
@@ -210,39 +234,26 @@
           </div>
           <div class="trend-chart">
             <div class="trend-chart__bars-wrap">
-              <div class="trend-chart__bars" id="trend-bars" role="img" aria-label="Bar chart of occupancy throughout the day">
-                <!-- populated by JS -->
-              </div>
+              <div class="trend-chart__bars" id="trend-bars" role="img" aria-label="Bar chart of occupancy throughout the day"></div>
             </div>
-            <div class="trend-chart__x-labels" id="trend-x-labels" aria-hidden="true">
-              <!-- populated by JS -->
-            </div>
+            <div class="trend-chart__x-labels" id="trend-x-labels" aria-hidden="true"></div>
           </div>
         </section>
 
-        <!-- Recent Alerts -->
         <section class="card alerts-card" aria-labelledby="alerts-heading">
           <div class="card__header">
             <h2 class="card__title" id="alerts-heading">Recent Alerts</h2>
-            <a href="#alerts" class="alerts-view-all" id="alerts-view-all">View All</a>
+            <a href="#" class="alerts-view-all" id="alerts-view-all">View All</a>
           </div>
-          <ul class="alert-list" id="alert-list" role="list" aria-label="Recent system alerts">
-            <!-- populated by JS -->
-          </ul>
+          <ul class="alert-list" id="alert-list" role="list" aria-label="Recent system alerts"></ul>
         </section>
+      </div>
 
-      </div><!-- /middle-row -->
-
-      <!-- ── Bottom: Notice + Quick Action ──────────────────────────────── -->
       <div class="bottom-row">
-
-        <!-- System notice banner -->
         <div class="notice-banner" id="notice-banner" role="status" aria-live="polite">
           <div class="notice-banner__icon" aria-hidden="true">
-            <!-- clock icon -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
           </div>
           <div class="notice-banner__text">
@@ -252,10 +263,8 @@
           <button class="notice-banner__dismiss" id="notice-banner-dismiss" type="button" aria-label="Dismiss system notice">Dismiss</button>
         </div>
 
-        <!-- Manage Scanners quick action -->
-        <a href="#scanners" class="quick-card" id="quick-scanners" role="link" aria-label="Manage Scanners — view status of all 12 entry points">
+        <a href="#" class="quick-card" id="quick-scanners" role="link" aria-label="Manage Scanners — view status of all 12 entry points" data-section="spaces">
           <div class="quick-card__icon" aria-hidden="true">
-            <!-- qr-code / scan icon -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/>
               <rect x="3" y="16" width="5" height="5"/>
@@ -275,10 +284,248 @@
             </svg>
           </div>
         </a>
+      </div>
 
-      </div><!-- /bottom-row -->
+    </div><!-- /section-dashboard -->
 
-    </div><!-- /content -->
+    <!-- ══ Section: History ══════════════════════════════════════════════ -->
+    <div class="content section section--hidden" id="section-history">
+
+      <!-- Summary Cards -->
+      <div class="stats-row" role="list" aria-label="Visit history metrics">
+        <div class="stat-card" role="listitem">
+          <div class="stat-card__header">
+            <span class="stat-card__label">Total Visits (Period)</span>
+            <div class="stat-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card__value" id="hist-stat-total">1,452</div>
+          <div class="stat-card__sub stat-card__sub--up" id="hist-stat-delta">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            +12% vs last week
+          </div>
+        </div>
+
+        <div class="stat-card" role="listitem">
+          <div class="stat-card__header">
+            <span class="stat-card__label">Avg. Visit Duration</span>
+            <div class="stat-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card__value" id="hist-stat-avg-dur">1h 45m</div>
+          <div class="stat-card__sub stat-card__sub--neutral">Stable</div>
+        </div>
+
+        <div class="stat-card" role="listitem">
+          <div class="stat-card__header">
+            <span class="stat-card__label">Peak Utilization Time</span>
+            <div class="stat-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card__value" id="hist-stat-peak">14:00</div>
+          <div class="stat-card__sub stat-card__sub--neutral" id="hist-stat-peak-zone">Zone: Quiet Study A</div>
+        </div>
+      </div>
+
+      <!-- Log Table -->
+      <section class="card hist-table-card" aria-labelledby="hist-table-heading">
+        <div class="hist-table-header">
+          <div class="hist-zone-filters" id="hist-zone-filters" role="group" aria-label="Filter by zone">
+            <button class="hist-zone-btn hist-zone-btn--active" data-zone="all">All Zones</button>
+            <button class="hist-zone-btn" data-zone="quiet">Quiet Study</button>
+            <button class="hist-zone-btn" data-zone="group">Group Rooms</button>
+          </div>
+          <div class="hist-search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input class="hist-search" id="hist-search" type="search" placeholder="Search ID or Name" aria-label="Search visit history by ID or name" />
+          </div>
+        </div>
+
+        <div class="hist-table-wrap">
+          <table class="hist-table" id="hist-table" aria-label="Visit history log">
+            <thead>
+              <tr>
+                <th>User / ID</th>
+                <th>Zone</th>
+                <th>Event</th>
+                <th>Time</th>
+                <th>Method</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="hist-tbody">
+              <!-- populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hist-table-footer">
+          <span id="hist-showing">Showing 1–5 of 1,452 entries</span>
+          <div class="hist-pagination">
+            <button class="hist-page-btn" id="hist-prev" aria-label="Previous page">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="hist-page-btn" id="hist-next" aria-label="Next page">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /section-history -->
+
+    <!-- ══ Section: Settings ═════════════════════════════════════════════ -->
+    <div class="content section section--hidden" id="section-settings">
+
+      <div class="settings-layout">
+
+        <!-- Left column -->
+        <div class="settings-col-main">
+
+          <!-- Capacity & Occupancy -->
+          <section class="card settings-card" aria-labelledby="set-cap-heading">
+            <div class="settings-card__head">
+              <div class="settings-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+                  <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+                  <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+                </svg>
+              </div>
+              <h2 class="settings-card__title" id="set-cap-heading">Capacity &amp; Occupancy Thresholds</h2>
+            </div>
+            <div class="settings-card__divider"></div>
+
+            <div class="settings-field">
+              <label class="settings-label" for="set-max-capacity">Maximum Global Capacity</label>
+              <p class="settings-hint">The absolute maximum number of individuals allowed in the facility.</p>
+              <input class="settings-input" id="set-max-capacity" type="number" value="1200" min="1" aria-describedby="set-max-capacity-hint" />
+            </div>
+
+            <div class="settings-field">
+              <label class="settings-label">Threshold Triggers (%)</label>
+              <div class="settings-threshold-row">
+                <div class="settings-threshold settings-threshold--blue">
+                  <div class="settings-threshold__header">
+                    <span class="settings-threshold__name">Moderate</span>
+                    <span class="settings-threshold__dot settings-threshold__dot--blue"></span>
+                  </div>
+                  <div class="settings-threshold__input-wrap">
+                    <input class="settings-threshold__input" id="set-thr-moderate" type="number" value="50" min="1" max="99" aria-label="Moderate threshold percentage" />
+                    <span class="settings-threshold__unit">%</span>
+                  </div>
+                </div>
+                <div class="settings-threshold settings-threshold--amber">
+                  <div class="settings-threshold__header">
+                    <span class="settings-threshold__name">Busy</span>
+                    <span class="settings-threshold__dot settings-threshold__dot--amber"></span>
+                  </div>
+                  <div class="settings-threshold__input-wrap">
+                    <input class="settings-threshold__input" id="set-thr-busy" type="number" value="75" min="1" max="99" aria-label="Busy threshold percentage" />
+                    <span class="settings-threshold__unit">%</span>
+                  </div>
+                </div>
+                <div class="settings-threshold settings-threshold--red">
+                  <div class="settings-threshold__header">
+                    <span class="settings-threshold__name">Full / Near Capacity</span>
+                    <span class="settings-threshold__dot settings-threshold__dot--red"></span>
+                  </div>
+                  <div class="settings-threshold__input-wrap">
+                    <input class="settings-threshold__input" id="set-thr-full" type="number" value="95" min="1" max="100" aria-label="Full / near capacity threshold percentage" />
+                    <span class="settings-threshold__unit">%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Admin Access Control -->
+          <section class="card settings-card" aria-labelledby="set-admin-heading">
+            <div class="settings-card__head">
+              <div class="settings-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <h2 class="settings-card__title" id="set-admin-heading">Admin Access Control</h2>
+              <button class="settings-add-admin" id="btn-add-admin" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Administrator
+              </button>
+            </div>
+            <div class="settings-card__divider"></div>
+
+            <table class="settings-admin-table" aria-label="Administrators list">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Last Active</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="settings-admin-tbody">
+                <!-- populated by JS -->
+              </tbody>
+            </table>
+          </section>
+
+        </div><!-- /settings-col-main -->
+
+        <!-- Right column -->
+        <div class="settings-col-side">
+
+          <!-- Operational Hours -->
+          <section class="card settings-card" aria-labelledby="set-hours-heading">
+            <div class="settings-card__head">
+              <div class="settings-card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <h2 class="settings-card__title" id="set-hours-heading">Operational Hours</h2>
+            </div>
+            <div class="settings-card__divider"></div>
+
+            <div class="settings-hours-list" id="settings-hours-list">
+              <div class="settings-hours-row">
+                <span class="settings-hours-day">Weekdays</span>
+                <input class="settings-hours-input" type="time" value="07:00" aria-label="Weekday opening time" />
+                <span class="settings-hours-sep">–</span>
+                <input class="settings-hours-input" type="time" value="23:00" aria-label="Weekday closing time" />
+              </div>
+              <div class="settings-hours-row">
+                <span class="settings-hours-day">Saturday</span>
+                <input class="settings-hours-input" type="time" value="09:00" aria-label="Saturday opening time" />
+                <span class="settings-hours-sep">–</span>
+                <input class="settings-hours-input" type="time" value="20:00" aria-label="Saturday closing time" />
+              </div>
+              <div class="settings-hours-row settings-hours-row--closed">
+                <span class="settings-hours-day">Sunday</span>
+                <span class="settings-hours-closed">Closed</span>
+              </div>
+            </div>
+          </section>
+
+        </div><!-- /settings-col-side -->
+
+      </div><!-- /settings-layout -->
+
+    </div><!-- /section-settings -->
+
   </div><!-- /main -->
 
   <script src="scripts/admin.js"></script>
