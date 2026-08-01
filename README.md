@@ -1,27 +1,106 @@
-# Library Space Monitor
+# Library Space Monitor (LSM)
 
 Tracks library occupancy through student barcode scans. Students scan in on entry and out on exit; the system determines the direction automatically based on whether an active visit exists.
 
+A companion web UI provides a **public status page** for students and a full **admin SPA** for staff — served locally via Vite with hot-module replacement.
+
 ---
 
-## Architecture
+## Project structure
 
 ```
-src/
+src/                          — Backend domain logic (TypeScript)
 ├── domain/
-│   ├── models.ts       — Student, Visit, LibraryStatus, ScanResult, ScanAction
-│   └── errors.ts       — Typed domain exceptions
+│   ├── models.ts             — Student, Visit, LibraryStatus, ScanResult, ScanAction
+│   └── errors.ts             — Typed domain exceptions
 ├── repositories/
-│   ├── interfaces.ts   — IStudentRepository, IVisitRepository (swap freely)
-│   └── inMemory.ts     — In-memory implementations for dev/test
+│   ├── interfaces.ts         — IStudentRepository, IVisitRepository
+│   └── inMemory.ts           — In-memory implementations for dev/test
 ├── services/
-│   └── libraryService.ts  — Core scan orchestration (the heart of the system)
+│   └── libraryService.ts     — Core scan orchestration
 └── validation/
-    └── validators.ts   — Barcode validation (assertion function)
+    └── validators.ts         — Barcode validation
+
+ui/                           — Frontend (HTML / Vanilla CSS / JS)
+├── index.html                — Public status page (real-time occupancy)
+├── admin.html                — Admin SPA (Dashboard · History · Settings)
+├── styles/
+│   ├── main.css              — Public page styles
+│   └── admin.css             — Admin panel styles
+└── scripts/
+    ├── status.js             — Public page logic
+    └── admin.js              — Admin SPA logic (section router, all page logic)
 
 tests/
-└── libraryService.test.ts  — 30+ deterministic test cases
+└── libraryService.test.ts    — 30+ deterministic test cases
+
+vite.config.mjs               — Vite dev server config (root: ui/)
 ```
+
+---
+
+## UI — Pages
+
+### Public Status Page (`/`)
+A read-only occupancy dashboard for students and visitors.
+
+- Live occupancy percentage with colour-coded status ring
+- Available spaces counter and zone-level breakdown
+- Auto-refreshes every 30 seconds
+
+### Admin SPA (`/admin.html`)
+A single-page application for library staff. Navigation is handled client-side with no page reloads.
+
+| Section | Features |
+|---|---|
+| **Dashboard** | Real-time stat cards (occupancy, capacity %, avg visit duration, peak hour), hourly bar chart, recent alerts, system notice banner |
+| **History** | Visit log table with entry/exit badges, zone filter pills, live search, period selector (7/30/90 days), CSV export, pagination |
+| **Settings** | Global capacity + threshold triggers (Moderate / Busy / Full), operational hours, admin access control table, Save/Cancel with toast feedback |
+| **Sign Out** | Confirm dialog → redirects to public status page |
+
+---
+
+## Getting started
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Run the dev server (UI)
+
+```bash
+npm run dev
+```
+
+Opens **http://localhost:5173/admin.html** automatically. Both pages are available:
+
+| URL | Page |
+|---|---|
+| `http://localhost:5173/` | Public status page |
+| `http://localhost:5173/admin.html` | Admin SPA |
+
+Vite provides **Hot Module Replacement** — edits to any file in `ui/` reflect instantly in the browser without a manual refresh.
+
+### Run backend tests
+
+```bash
+npm test                # run all tests once
+npm run test:watch      # re-run on file changes
+npm run typecheck       # TypeScript type-check only (no emit)
+```
+
+### Build for production
+
+```bash
+npm run build    # outputs to dist/
+npm run preview  # locally preview the production build
+```
+
+---
+
+## Architecture — Backend
 
 ### Layer responsibilities
 
@@ -46,17 +125,6 @@ tests/
 | Available spaces | Clamped to `max(0, capacity − occupancy)` — never negative |
 | Privacy | `ScanResult` exposes only `LibraryStatus`; no student PII is leaked |
 | Integrity guard | `DuplicateActiveVisitError` if a student somehow acquires two active visits |
-
----
-
-## Getting started
-
-```bash
-npm install
-npm test          # run all tests once
-npm run test:watch  # re-run on file changes
-npm run typecheck   # tsc type-check only (no emit)
-```
 
 ---
 
@@ -96,3 +164,7 @@ const service = new LibraryService(
   { capacity: 200, minScanIntervalSeconds: 5 }
 );
 ```
+
+
+---
+
