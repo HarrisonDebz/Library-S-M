@@ -16,9 +16,7 @@
     </a>
 
     <div class="nav__tabs" role="tablist">
-      <a href="index.html"   class="nav__tab nav__tab--active" id="nav-tab-status"  role="tab" aria-selected="true">Status</a>
-      <a href="scanner.html" class="nav__tab"                  id="nav-tab-scanner" role="tab" aria-selected="false">Scanner</a>
-      <a href="admin.html" class="nav__tab" id="nav-tab-admin" role="tab" aria-selected="false">Admin</a>
+      <a href="index.html" class="nav__tab nav__tab--active" id="nav-tab-status" role="tab" aria-selected="true">Status</a>
     </div>
 
     <div class="nav__actions">
@@ -30,13 +28,14 @@
         </svg>
         <span class="nav__notif-dot" id="nav-notif-dot" aria-label="Unread notifications"></span>
       </button>
-      <button class="nav__icon-btn" id="nav-btn-profile" aria-label="Profile" title="My account">
-        <!-- user icon -->
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
+
+      <a href="admin.html" class="nav__admin-btn" id="btn-admin-login" aria-label="Login as Library Admin">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
         </svg>
-      </button>
+        <span>Login as Library Admin</span>
+      </a>
     </div>
   </nav>
 
@@ -190,6 +189,24 @@
 
   </main>
 
-  <script src="scripts/status.js"></script>
+  <!-- ═══ Footer ═══════════════════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__content">
+      <div class="footer__left">
+        <span class="footer__logo">LSM</span>
+        <span class="footer__copyright">© Library Space Monitor — Public Status Portal</span>
+      </div>
+      <div class="footer__right">
+        <a href="admin.html" class="footer__admin-link" id="footer-admin-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Staff & Admin Portal
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="scripts/status.js"></script>
 </body>
 </html>
