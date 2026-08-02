@@ -7,7 +7,7 @@ export default defineConfig({
 
   server: {
     port: 5173,
-    open: '/admin.html',   // Auto-open admin panel on `npm run dev`
+    open: '/index.html',   // Auto-open public status landing page on `npm run dev`
     strictPort: false,      // Fall back to next free port automatically
   },
 
@@ -15,5 +15,11 @@ export default defineConfig({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: 'ui/index.html',
+        admin: 'ui/admin.html',
+      },
+    },
   },
 });
