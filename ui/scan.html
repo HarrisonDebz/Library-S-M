@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scan Terminal — LSM</title>
+  <meta name="description" content="Barcode scan terminal for student entry and exit tracking at the main library." />
+  <link rel="stylesheet" href="styles/scan.css" />
+</head>
+<body>
+
+  <!-- ═══ Navigation ═══════════════════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav__logo" aria-label="LSM Home">
+      <span class="nav__logo-mark">LSM</span>
+    </a>
+
+    <div class="nav__tabs" role="tablist">
+      <a href="index.html" class="nav__tab" id="nav-tab-status">Status</a>
+      <a href="scan.html" class="nav__tab nav__tab--active" id="nav-tab-scan" aria-selected="true">Scan Terminal</a>
+    </div>
+
+    <div class="nav__actions">
+      <a href="admin.html" class="nav__admin-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Staff &amp; Admin Portal
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══ Main Content ═════════════════════════════════════════════════════ -->
+  <main class="page" id="main-content">
+
+    <header class="page__header">
+      <h1 class="page__title">Library Barcode Scanner</h1>
+      <p class="page__subtitle">Scan your student ID or faculty barcode to check in or out of the facility.</p>
+    </header>
+
+    <div class="scan-container">
+
+      <!-- ── Scanner Card ────────────────────────────────────────────────── -->
+      <section class="scan-card" aria-labelledby="scan-heading">
+        <div class="scan-card__header">
+          <h2 class="card__title" id="scan-heading">Barcode Entry Terminal</h2>
+          <span class="scan-terminal-badge">
+            <span class="scan-terminal-badge__dot"></span>
+            Terminal #01 Online
+          </span>
+        </div>
+
+        <!-- Mode selection -->
+        <div class="scan-mode-wrap" role="radiogroup" aria-label="Scan Mode">
+          <button type="button" class="scan-mode-btn scan-mode-btn--active" id="mode-btn-auto" data-mode="auto">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Auto Detect
+          </button>
+          <button type="button" class="scan-mode-btn scan-mode-btn--checkin" id="mode-btn-in" data-mode="check_in">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Check In
+          </button>
+          <button type="button" class="scan-mode-btn scan-mode-btn--checkout" id="mode-btn-out" data-mode="check_out">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Check Out
+          </button>
+        </div>
+
+        <!-- Scan Form -->
+        <form class="scan-form" id="scan-form" autocomplete="off" onsubmit="return false;">
+          <div class="scan-input-group">
+            <svg class="scan-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+              <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+              <line x1="7" y1="8" x2="7" y2="16"/><line x1="11" y1="8" x2="11" y2="16"/>
+              <line x1="15" y1="8" x2="15" y2="16"/><line x1="17" y1="8" x2="17" y2="16"/>
+            </svg>
+            <input
+              type="text"
+              id="scan-input"
+              class="scan-input"
+              placeholder="Scan or enter barcode (e.g. STU-88219)"
+              autofocus
+              required
+            />
+            <button type="submit" class="scan-submit-btn" id="btn-submit-scan">
+              <span>Scan</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- Presets -->
+        <div class="scan-presets">
+          <div class="scan-presets__label">Quick Test Barcodes (Click to Scan):</div>
+          <div class="scan-chips" id="scan-chips">
+            <button type="button" class="scan-chip" data-code="STU-88219">
+              <span>Sarah Jenkins</span> <span class="scan-chip__code">STU-88219</span>
+            </button>
+            <button type="button" class="scan-chip" data-code="FAC-11024">
+              <span>Michael Chang</span> <span class="scan-chip__code">FAC-11024</span>
+            </button>
+            <button type="button" class="scan-chip" data-code="STU-44122">
+              <span>Emily Chen</span> <span class="scan-chip__code">STU-44122</span>
+            </button>
+            <button type="button" class="scan-chip" data-code="STU-77531">
+              <span>David Miller</span> <span class="scan-chip__code">STU-77531</span>
+            </button>
+            <button type="button" class="scan-chip" data-code="STU-33901">
+              <span>Priya Nair</span> <span class="scan-chip__code">STU-33901</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Feedback Card -->
+        <div class="scan-result-card" id="scan-result-card" role="region" aria-live="polite">
+          <div class="scan-result__header">
+            <div class="scan-result__title" id="scan-result-title"></div>
+            <div class="scan-result__time" id="scan-result-time"></div>
+          </div>
+          <div class="scan-result__details" id="scan-result-details"></div>
+        </div>
+
+      </section>
+
+      <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+      <aside class="scan-sidebar">
+
+        <!-- Live Occupancy Box -->
+        <div class="card">
+          <h2 class="card__title" style="margin-bottom:12px;">Live Occupancy</h2>
+          <div class="scan-stat-box">
+            <div class="scan-stat-val" id="sidebar-occupancy-val">482</div>
+            <div class="scan-stat-lbl" id="sidebar-occupancy-lbl">out of 1,200 capacity</div>
+          </div>
+
+          <div class="occupancy-bar-wrap">
+            <div class="occupancy-bar-track" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+              <div class="occupancy-bar-fill" id="sidebar-bar-fill" style="width: 40%"></div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:var(--color-text-secondary);">
+            <span>Status: <strong id="sidebar-status-lbl" style="color:var(--color-primary);">BUSY</strong></span>
+            <span class="live-indicator">
+              <span class="live-indicator__dot"></span>
+              Live Sync
+            </span>
+          </div>
+        </div>
+
+        <!-- Recent Scan Log -->
+        <div class="card">
+          <h2 class="card__title">Terminal Activity Log</h2>
+          <div class="scan-log-list" id="scan-log-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- ═══ Footer ═══════════════════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__content">
+      <div class="footer__left">
+        <span class="footer__logo">LSM</span>
+        <span class="footer__copyright">© Library Space Monitor — Self-Scan Terminal</span>
+      </div>
+      <div class="footer__right">
+        <a href="index.html" class="footer__admin-link">Public Status</a>
+        <span style="margin: 0 8px;">•</span>
+        <a href="admin.html" class="footer__admin-link">Staff &amp; Admin Portal</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="scripts/scan.js"></script>
+</body>
+</html>
