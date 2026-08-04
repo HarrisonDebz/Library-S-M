@@ -17,9 +17,18 @@
 
     <div class="nav__tabs" role="tablist">
       <a href="index.html" class="nav__tab nav__tab--active" id="nav-tab-status" role="tab" aria-selected="true">Status</a>
+      <a href="scan.html" class="nav__tab" id="nav-tab-scan">Scan Terminal</a>
     </div>
 
     <div class="nav__actions">
+      <a href="scan.html" class="nav__admin-btn" style="margin-right: 4px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+          <line x1="7" y1="8" x2="7" y2="16"/><line x1="11" y1="8" x2="11" y2="16"/>
+        </svg>
+        Scan Terminal
+      </a>
       <button class="nav__icon-btn" id="nav-btn-notifications" aria-label="Notifications" title="Notifications">
         <!-- bell icon -->
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -36,9 +45,20 @@
   <main class="page" id="main-content">
 
     <!-- Page header -->
-    <header class="page__header">
-      <h1 class="page__title">Main Library Status</h1>
-      <p class="page__subtitle">Real-time occupancy and facility updates.</p>
+    <header class="page__header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+      <div>
+        <h1 class="page__title">Main Library Status</h1>
+        <p class="page__subtitle">Real-time occupancy and facility updates.</p>
+      </div>
+      <a href="scan.html" class="nav__admin-btn" style="padding: 10px 18px; font-size: 14px; background: var(--color-primary); color: #ffffff; border: none; box-shadow: 0 4px 14px var(--color-primary-glow);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+          <line x1="7" y1="8" x2="7" y2="16"/><line x1="11" y1="8" x2="11" y2="16"/>
+          <line x1="15" y1="8" x2="15" y2="16"/><line x1="17" y1="8" x2="17" y2="16"/>
+        </svg>
+        Self-Scan Station
+      </a>
     </header>
 
     <!-- Top grid: occupancy + sidebar -->
