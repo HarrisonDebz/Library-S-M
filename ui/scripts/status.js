@@ -8,11 +8,15 @@
 
 'use strict';
 
+import { lsmStore } from './store.js';
+
 // ─── Mock Data ───────────────────────────────────────────────────────────────
 
+const initialStoreState = lsmStore.getState();
+
 const MOCK_STATE = {
-  capacity: 1200,
-  currentOccupancy: 942,
+  capacity: initialStoreState.capacity || 1200,
+  currentOccupancy: initialStoreState.currentOccupancy || 482,
 
   notice: {
     title: 'High Priority Notice',
@@ -236,7 +240,17 @@ function setupNoticeButton() {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 function init() {
-  // Occupancy
+  // Subscribe to store updates
+  lsmStore.subscribe((state) => {
+    MOCK_STATE.capacity = state.capacity;
+    MOCK_STATE.currentOccupancy = state.currentOccupancy;
+    renderOccupancy(MOCK_STATE);
+  });
+
+  // Initial Occupancy
+  const currentState = lsmStore.getState();
+  MOCK_STATE.capacity = currentState.capacity;
+  MOCK_STATE.currentOccupancy = currentState.currentOccupancy;
   renderOccupancy(MOCK_STATE);
 
   // Hours
@@ -251,9 +265,6 @@ function init() {
 
   // Timestamp ticker — every second
   setInterval(updateTimestamp, 1000);
-
-  // Simulated live data — every 30 s
-  setInterval(simulateLiveUpdate, 30_000);
 
   // Notice button
   setupNoticeButton();
