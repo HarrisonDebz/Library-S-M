@@ -19,6 +19,7 @@ export default defineConfig({
       input: {
         main: 'ui/index.html',
         admin: 'ui/admin.html',
+        scan: 'ui/scan.html',
       },
     },
   },
