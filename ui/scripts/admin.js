@@ -6,35 +6,27 @@
 
 'use strict';
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
+import { lsmStore } from './store.js';
+
+// ─── Mock & Store State ────────────────────────────────────────────────────────
+
+const storeState = lsmStore.getState();
 
 const ADMIN_STATE = {
-  capacity:         600,
-  currentOccupancy: 482,
-  avgVisitMinutes:  105, // 1h 45m
+  capacity:         storeState.capacity || 1200,
+  currentOccupancy: storeState.currentOccupancy || 482,
+  avgVisitMinutes:  storeState.avgVisitMinutes || 105, // 1h 45m
 
   /** Hourly occupancy counts — index 0 = 8 AM, each step = 1 hour */
-  hourlyData: [120, 195, 290, 360, 455, 482, 440, 370, 280],
-  hourLabels: ['8a','9a','10a','11a','12p','1p','2p','3p','4p'],
+  hourlyData: storeState.hourlyData || [120, 195, 290, 360, 455, 482, 440, 370, 280],
+  hourLabels: storeState.hourLabels || ['8a','9a','10a','11a','12p','1p','2p','3p','4p'],
 
-  alerts: [
+  alerts: storeState.alerts || [
     {
       type: 'warning',
       title: 'Capacity Warning: Study Room B',
       desc: 'Occupancy has exceeded 90% threshold.',
       time: '10 mins ago',
-    },
-    {
-      type: 'info',
-      title: 'Scanner Offline: Main Entrance',
-      desc: 'Scanner #04 failed to ping in last cycle.',
-      time: '45 mins ago',
-    },
-    {
-      type: 'success',
-      title: 'Weekly Report Generated',
-      desc: 'The automated weekly usage report is ready.',
-      time: '2 hours ago',
     },
   ],
 
@@ -344,7 +336,7 @@ const EXIT_ICON  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const DOTS_ICON  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>`;
 
 function getFilteredEntries() {
-  let list = HISTORY_ENTRIES;
+  let list = lsmStore.getState().history || [];
 
   // Zone filter
   if (histState.zone !== 'all') {
@@ -514,10 +506,15 @@ function setupSettings() {
 
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      // Brief loading state
       const orig = saveBtn.innerHTML;
       saveBtn.disabled  = true;
       saveBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 0.8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Saving…`;
+
+      const capInput = $('set-max-capacity');
+      if (capInput) {
+        lsmStore.updateCapacity(capInput.value);
+      }
+
       setTimeout(() => {
         saveBtn.disabled  = false;
         saveBtn.innerHTML = orig;
@@ -530,7 +527,8 @@ function setupSettings() {
     cancelBtn.addEventListener('click', () => {
       // Reset inputs to original values
       const el = (id, val) => { const e = $(id); if (e) e.value = val; };
-      el('set-max-capacity', '1200');
+      const currentCap = lsmStore.getState().capacity;
+      el('set-max-capacity', String(currentCap));
       el('set-thr-moderate', '50');
       el('set-thr-busy',     '75');
       el('set-thr-full',     '95');
@@ -561,6 +559,25 @@ function setupSignOut() {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 function init() {
+  // Sync state with store
+  lsmStore.subscribe((state) => {
+    ADMIN_STATE.capacity = state.capacity;
+    ADMIN_STATE.currentOccupancy = state.currentOccupancy;
+    ADMIN_STATE.hourlyData = state.hourlyData || ADMIN_STATE.hourlyData;
+    renderStats(ADMIN_STATE);
+    renderTrendChart(ADMIN_STATE);
+    renderHistoryTable();
+  });
+
+  const state = lsmStore.getState();
+  ADMIN_STATE.capacity = state.capacity;
+  ADMIN_STATE.currentOccupancy = state.currentOccupancy;
+  ADMIN_STATE.hourlyData = state.hourlyData || ADMIN_STATE.hourlyData;
+
+  // Set initial capacity input in settings if present
+  const capInput = $('set-max-capacity');
+  if (capInput) capInput.value = state.capacity;
+
   // Dashboard
   renderStats(ADMIN_STATE);
   renderTrendChart(ADMIN_STATE);
@@ -590,9 +607,6 @@ function init() {
   if (setActions)  setActions.style.display  = 'none';
   const reportBtn = $('btn-generate-report');
   if (reportBtn)  reportBtn.style.display    = '';
-
-  // Simulated live updates every 20 s
-  setInterval(simulateLiveUpdate, 20_000);
 }
 
 document.addEventListener('DOMContentLoaded', init);
