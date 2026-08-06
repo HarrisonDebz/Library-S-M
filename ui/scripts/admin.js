@@ -556,6 +556,37 @@ function setupSignOut() {
   });
 }
 
+// ─── Mobile Drawer ────────────────────────────────────────────────────────────
+
+function setupMobileDrawer() {
+  const toggleBtn = $('sidebar-toggle-btn');
+  const sidebar   = $('sidebar');
+  const overlay   = $('sidebar-overlay');
+
+  if (!toggleBtn || !sidebar || !overlay) return;
+
+  function openDrawer() {
+    sidebar.classList.add('sidebar--open');
+    overlay.classList.add('sidebar-overlay--active');
+  }
+
+  function closeDrawer() {
+    sidebar.classList.remove('sidebar--open');
+    overlay.classList.remove('sidebar-overlay--active');
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.contains('sidebar--open');
+    if (isOpen) closeDrawer(); else openDrawer();
+  });
+
+  overlay.addEventListener('click', closeDrawer);
+
+  document.querySelectorAll('.sidebar__link').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 function init() {
@@ -588,6 +619,7 @@ function init() {
 
   // Navigation
   setupSidebarNav();
+  setupMobileDrawer();
 
   // History
   setupHistory();
